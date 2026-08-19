@@ -130,7 +130,7 @@ export default function BirthdayForm() {
             <p className="subtitle">Mensagem enviada</p>
             <h1 className="title success-title">Obrigado!</h1>
             <p className="success-text">
-              Sua mensagem de aniversário para <strong>Mine315-BAN</strong> foi registrada com sucesso.
+              Sua mensagem de aniversário foi registrada com sucesso.
             </p>
             <button type="button" className="submit-btn" onClick={handleReset}>
               Enviar outra mensagem
@@ -157,9 +157,8 @@ export default function BirthdayForm() {
             <img className="crest" src={rccCrest} alt="Emblema RCC" />
           </div>
 
-          <p className="eyebrow">Niver do Mine315-BAN</p>
-          <p className="subtitle">Mensagem para</p>
-          <h1 className="title">Mine315-BAN</h1>
+          <p className="eyebrow">◆</p>
+          <h1 className="title">Evento de Aniversário</h1>
           <div className="title-flourish"><span>◆</span></div>
         </header>
 
@@ -218,7 +217,7 @@ export default function BirthdayForm() {
               <label htmlFor="mensagem">Mensagem de parabéns <span className="required">*</span></label>
               <textarea
                 id="mensagem" maxLength={500}
-                placeholder="Escreva sua mensagem de aniversário para o Mine315-BAN..."
+                placeholder="Escreva sua mensagem de aniversário"
                 value={mensagem}
                 onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMensagem(e.target.value)}
               />
