@@ -808,42 +808,7 @@ Em caso de reincidência de não cumprimento de meta nos cargos de Treinador de 
             || formData.get('hora_reuniao') || formData.get('titulo_proposta_${i}') || formData.get('autor_proposta_${i}') || formData.get('numero_proposta_${i}') || formData.get('nick_proposta')
         let mensagem = '';
 
-        if (formId === "form_reuniao") {
-            const dataReuniao = formData.get('data_reuniao');
-            const horaReuniao = formData.get('hora_reuniao');
-            const horarios = horaReuniao.split('/');
-            const horaBR = horarios[0].trim();
-            const [horaBRPart, minutoBR] = horaBR.slice(0, 5).split(':').map(Number);
-            let horaPT = new Date();
-            horaPT.setHours(horaBRPart + 4, minutoBR);
-            horaPT = `${horaPT.getHours().toString().padStart(2, '0')}:${horaPT.getMinutes().toString().padStart(2, '0')}PT`;
-            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-            const dataParts = dataReuniao.split('-');
-            const year = dataParts[0];
-            const month = meses[parseInt(dataParts[1]) - 1];
-            const day = dataParts[2];
-            const dataFormatada = `${day} ${month} ${year}`;
-            mensagem = `[table][tr][td][img]https://i.imgur.com/gJJ4Kae.png[/img]
-
-[font=Lexend Deca][size=28][blur][b][color=maroon]REUNIÃO GERAL[/color][/b][/blur][/size][/font]
-
-[font=Poppins][size=14]Saudações, tre inador [b]{USERNAME}[/b]!
-
-A próxima reunião geral da [blur][color=maroon][b]Companhia dos Treinadores[/b][/color][/blur] está marcada! A liderança te convida a participar desse momento, onde serão apresentadas as [b]últimas novidades, ideias e promoções[/b].
-Além disso, todos os membros estão convidados a participar do [b]evento realizado pelo Comitê de Marketing[/b], logo após o fim da reunião.[/size][/font]
-
-[table class="rank" style="transition: none 0ms ease 0s; color: rgb(255, 255, 255); font-weight: 400; height: 20px; width: -webkit-fill-available; max-width: 550px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.14) 0px 1px 2px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px inset; text-align: center; line-height: 0em; RCC - SÓ A VERDADEIRA!: rgba(0, 0, 0, 0.2) 0px 1px 1px; border-collapse: collapse; font-family: Roboto, sans-serif; border-width: initial !important; border-style: none !important; border-color: initial !important;" bgcolor="maroon"]
-[tr style="transition: none 0ms ease 0s; border: none; box-sizing: border-box; margin: 0px; padding: 0px;"][td style="transition: none 0ms ease 0s; box-sizing: border-box; margin: 0px; padding: 15px; border-width: initial !important; border-style: none !important; border-color: initial !important;"]
-[size=14][font=Poppins][color=white]A reunião acontecerá no dia [b]${dataFormatada}[/b] às [b]${horaBR}[/b] (BR) / [b]${horaPT}[/b] (PT).[/color][/font][/size][/td][/tr][/table][font=Poppins][size=14]A sua presença é muito importante nesse momento de convívio e transparência da companhia![/size][/font]
-
-[center][table style="transition: none 0ms ease 0s; width: -webkit-fill-available; color: rgb(0, 0, 0);" bgcolor="#f2f2f2" border="1"][tr][td][img(auto,40px)]https://static.vecteezy.com/system/resources/previews/022/101/124/original/whatsapp-logo-transparent-free-png.png[/img]
-[font=Poppins][size=14]Faça parte do nosso grupo do WhatsApp!
-[url=https://chat.whatsapp.com/DEzl7I33HeVCKNFptNZHa6][b][color=black]Clique aqui[/color][/b][/url] para entrar no grupo e interagir conosco.[/size][/font][/td][/tr][/table][/center][/td][/tr][/table]
-[center][img]https://i.imgur.com/CLtu2PT.png[/img]
-[b][font=Poppins][size=12]Atenciosamente, Comitê de Marketing
-Companhia dos Treinadores
-[color=maroon]#ImpérioVermelho[/color][/size][/font][/b][/center]`;
-        } else if (formId === "form_propostas") {
+        if (formId === "form_propostas") {
             let propostasBBcode = "";
             const quantidade = formData.get('quantidade_propostas');
 
