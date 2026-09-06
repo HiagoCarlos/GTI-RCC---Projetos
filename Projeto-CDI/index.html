@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CDI. Gerador de Mensagem Privada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  :root {
+    --bg: #170b0c;
+    --card-bg: #241113;
+    --card-border: rgba(255, 255, 255, 0.06);
+    --input-bg: #170b0c;
+    --accent: #e6394a;
+    --accent-glow: rgba(230, 57, 74, 0.35);
+    --text-main: #f5efee;
+    --text-muted: #a08b8d;
+    --divider: rgba(255, 255, 255, 0.08);
+    --link: #6ea8fe;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 24px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-info {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 36px 40px 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  }
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+  .img-background {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img-background img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  .title-cdi {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .title span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+  }
+
+  #select_options {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23a08b8d' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  #select_options:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .card {
+    display: none;
+    border-top: 1px solid var(--divider);
+    padding-top: 24px;
+  }
+
+  .card.card-active {
+    display: block;
+  }
+
+  .card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 20px;
+  }
+
+  .title_media_h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 4px 0 16px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label_input {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select#grupo_propostas,
+  select#tipo_expulsao {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 13px 16px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  select#grupo_propostas,
+  select#tipo_expulsao {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23a08b8d' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  input::placeholder {
+    color: #6f5c5e;
+  }
+
+  input:focus,
+  select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .qnt-propostas {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .button_submit {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: filter .15s ease, transform .05s ease;
+  }
+
+  .button_submit::before {
+    content: "\25B6";
+    margin-right: 8px;
+    font-size: 11px;
+  }
+
+  .button_submit:hover {
+    filter: brightness(1.08);
+  }
+
+  .button_submit:active {
+    transform: translateY(1px);
+  }
+
+  #btn_confirmar_quantidade {
+    margin-bottom: 20px;
+  }
+
+  .extra-form {
+    border-top: 1px solid var(--divider);
+    padding-top: 18px;
+    margin-top: 4px;
+  }
+
+  .message {
+    margin-top: 24px;
+    color: var(--text-main);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .message:empty {
+    display: none;
+  }
+
+  .dev {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 6px 0;
+  }
+
+  .dev a {
+    color: var(--link);
+    text-decoration: none;
+  }
+
+  .dev a:hover {
+    text-decoration: underline;
+  }
+
+  .dev i {
+    margin-right: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card-info">
+        <div class="top">
+
+            <div class="img-background">
+                <img src="https://www.habbo.com.br/habbo-imaging/badge/b22134s36104t27114s3901101792806cfdd525f8491204d658a9e53.gif"
+                    style="width: 60px; height: 60px;" />
+            </div>
+            <span class="title-cdi">Comitê de Intendência</span><br />
+        </div>
+
+        <div class="title">
+            <span>Gerador de Mensagem Privada</span>
+        </div>
+        <select id="select_options">
+            <option value="" selected="">Selecione o requerimento desejado</option>
+            <option value="carta_boas_vindas">Envio de Carta de Boas-vindas</option>
+            <option value="grad_pendente">Envio de Graduação Pendente</option>
+            <option value="meta_nao_cumprida">Envio de Meta não Cumprida</option>
+            <option value="propostas">Envio de Propostas</option>
+            <option value="noti_expulsao">Notificação de Expulsão</option>
+        </select>
+
+        <!--  cards e formulários  -->
+        <div class="card" id="carta_boas_vindas">
+            <div class="container_carta">
+                <h2>Envio de Carta de Boas-vindas</h2>
+
+                <form id="form_boas_vindas">
+                    <label for="nick_boas_vindas" class="label_input">Nick do membro:</label>
+                    <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_boas_vindas" id="nick_boas_vindas"
+                        type="text" />
+                    <button class="button_submit" type="submit">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        
+
+        <!--        card envio de grad         -->
+        <div class="card" id="grad_pendente">
+            <div class="container_grad">
+                <h2>Envio de Graduação Pendente</h2>
+
+                <form id="form_grad">
+                    <label for="nick_grad" class="label_input">Nick do membro:</label>
+                    <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_grad" id="nick_grad" type="text" />
+                    <button class="button_submit" type="submit">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!--         card meta não cumprida         -->
+        <div class="card" id="meta_nao_cumprida">
+            <div class="container_meta">
+                <h2>Envio de Meta Não Cumprida</h2>
+
+                <form id="form_meta">
+                    <label for="nick_meta" class="label_input">Nick do membro:</label>
+                    <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_meta" id="nick_meta" type="text" />
+                    <button class="button_submit" type="submit">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!--        card de propostas        -->
+        <div class="card" id="propostas">
+            <div class="container_propostas">
+                <h2>Envio de Propostas</h2>
+
+                <form id="form_propostas">
+
+                    <!--        grupo        -->
+                    <label style="font-weight: 600;" for="grupo_propostas" class="label_input">Escolha o grupo:</label>
+                    <select id="grupo_propostas" name="grupo_propostas">
+                        <option value="33">Treinadores</option>
+                    </select>
+
+                    <!--        form        -->
+                    <label class="qnt-propostas" for="quantidade_propostas" class="label_input">Quantidade de proposta</label>
+                    <input min="1" name="quantidade_propostas" id="quantidade_propostas" type="number" />
+                    <button class="button_submit" id="btn_confirmar_quantidade" type="button">
+                        Confirmar Quantidade
+                    </button>
+
+                    <div id="propostas_dinamicas">
+
+                    </div>
+
+                    <button style="display:none;" id="btn_enviar" type="submit">
+                        Enviar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!--        card expulsão        -->
+        <div class="card" id="noti_expulsao">
+            <div class="container_expulsao">
+                <h2>Notificação de Expulsão</h2>
+
+                <form id="form_expulsao">
+                    <div class="container_expulsao_div">
+                        <label for="tipo_expulsao" class="label_input">Escolha o tipo de Expulsão:</label>
+                        <select name="tipo_expulsao" id="tipo_expulsao">
+                            <option value="">Selecione o tipo</option>
+                            <option value="ausencia">Expulsão por Ausência/Modo Offline/Perfil Oculto</option>
+                            <option value="graduacao">Expulsão por Graduação Não Realizada</option>
+                            <option value="sem_vinculo">Expulsão por Estar Sem Vínculos</option>
+                        </select>
+
+                        <!--         expulsão por ausência        -->
+                        <div style="display:none;" class="extra-form" id="form_ausencia">
+                            <h3 class="title_media_h3">Detalhes da Expulsão por Ausência</h3>
+
+                            <label for="nick_ausencia" class="label_input">Nick do membro:</label>
+                            <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_ausencia" id="nick_ausencia"
+                                type="text" />
+                            <button class="button_submit" type="submit">
+                                Enviar
+                            </button>
+
+                        </div>
+
+                        <!--        expulsão por grad não realizada         -->
+                        <div style="display:none;" class="extra-form" id="form_graduacao">
+                            <h3 class="title_media_h3">Detalhes da Expulsão por Graduação Não Realizada</h3>
+
+                            <label for="nick_graduacao" class="label_input">Nick do membro:</label>
+                            <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_graduacao"
+                                id="nick_graduacao" type="text" />
+                            <button class="button_submit" type="submit">
+                                Enviar
+                            </button>
+
+                        </div>
+
+                        <!--        expulsão sem vinculos        -->
+                        <div style="display:none;" class="extra-form" id="form_sem_vinculo">
+                            <h3 class="title_media_h3">Detalhes da Expulsão por Estar Sem Vínculos</h3>
+
+                            <label for="nick_sem_vinculo" class="label_input">Nick do membro:</label>
+                            <input placeholder="Ex: hiagocarlos / Amortyzador." name="nick_sem_vinculo"
+                                id="nick_sem_vinculo" type="text" />
+                            <button class="button_submit" type="submit">
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!--         área para exibir a mensagem gerada         -->
+        <div class="message" id="fa-generated-message">
+
+        </div>
+
+    </div>
+
+   <p class="dev"> <i class="fas fa-code"></i> Desenvolvido por <a href="https://system.policercc.com.br/membros/hiagocarlos">hiagocarlos</a> & <a href="https://system.policercc.com.br/membros/Amortyzador.">Amortyzador. </a></p>
+<br>
+<p class="dev">© 2026 Gabinete de Tecnologia e Informação. Todos os direitos reservados.</p>
+</div>
+
+<script>
+    async function enviarMensagem(formId) {
+        const form = document.getElementById(formId);
+        const formData = new FormData(form);
+        const nick = formData.get('nick_grad') || formData.get('nick_meta') || formData.get('nick_ausencia')
+            || formData.get('nick_graduacao') || formData.get('nick_sem_vinculo') || formData.get('nick_boas_vindas')
+
+        const tipoExpulsao = formData.get('tipo_expulsao');
+        let mensagem = '';
+
+        if (formId === "form_grad") {
+            mensagem = `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]COMITÊ DE INTENDÊNCIA[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20]GRADUAÇÃO PENDENTE[/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[quote]Treinador(a) {USERNAME}, foi analisado recentemente - após de alguns dias de sua admissão/promoção -, que você ainda [color=#850000][b]não[/b][/color] realizou sua graduação. Lembre-se que, segundo o nosso [b]regimento interno[/b], o treinador de nível 1 que não cumprir sua graduação dentre [b]7 dias[/b] será [b]expulso da companhia[/b] e punido com [b]-100 medalhas efetivas negativas.[/b] Os treinadores de nível 2 em diante sofrerão [b]um rebaixamento[/b], acrescentando-se [b]100 medalhas efetivas negativas.[/b]
+
+Para identificar os graduadores da companhia pelo nickname, veja na listagem de membros da companhia dos treinadores - em nosso fórum - os militares que ocupam o cargo de [b]graduador[/b], buscando assim realizar sua graduação, o mais rápido possível, para evitar punições.
+
+[center]Para conferir a listagem de membros: [img]https://i.servimg.com/u/f50/20/14/10/96/th/seta1010.gif[/img] [url=https://www.policiarcc.com/t39246-tre-listagem-de-membros][color=#850000][b]Clique aqui[/b][/color][/url][/center][/quote]
+[quote][center][img]https://i.imgur.com/xtVxban.png[/img]
+Atenciosamente,
+[size=13]Companhia dos [color=#850000][b]Treinadores[/b][/color]
+Comitê de [color=#850000][b]Intendência[/b][/color][/size][/center][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]`;
+        } else if (formId === "form_meta"){
+            mensagem =  `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]COMITÊ DE INTENDÊNCIA[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20]META NÃO CUMPRIDA[/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[quote]Treinador(a) {USERNAME}, foi analisado recentemente que sua meta não foi atingida, por isso, é dever do ministério ressaltar que aqueles que [color=#850000][b]não[/b][/color] cumprirem suas metas semanais, de acordo com o cargo, poderão sofrer as seguintes consequências:
+
+[b]Treinador(a) de nível um (01):[/b] Receberá -10 medalhas negativas e em caso de reincidência no mês ou de forma seguida, o membro será expulso da companhia;
+[b]Treinador(a) de nível dois (02):[/b]  Receberá -10 medalhas negativas e em caso de reincidência no mês ou de forma seguida, o membro será rebaixado na companhia, acarretando no recebimento de 50 (cinquenta) medalhas negativas;
+[b]Treinador(a) de nível três (03):[/b] Receberá -20 medalhas negativas;
+[b]Graduador(a):[/b] Receberá -25 medalhas negativas.
+
+Em caso de reincidência de não cumprimento de meta nos cargos de Treinador de Nível 3 e Graduador o mesmo sofrerá um rebaixamento e levará 50 medalhas efetivas negativas, como está descrito no [url=https://www.policiarcc.com/t39256-tre-regimento-interno][b]REGIMENTO INTERNO[/b][/url].
+
+[center]Para conferir a porcentagem semanal da companhia: [img]https://i.servimg.com/u/f50/20/14/10/96/th/seta1010.gif[/img] [url=https://www.policiarcc.com/f878-treinadores][color=#850000][b]Clique aqui[/b][/color][/url][/center][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]
+`;
+        }else if (formId === "form_boas_vindas") {
+            mensagem = `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]SEJA BEM-VINDO[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20][TRE] BEM-VINDO AO IMPÉRIO VERMELHO![/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[center]Saudações, [b]{USERNAME}[/b][/center]
+
+[justify]Seja bem-vindo(a) ao [color=#8b0000][b]Império Vermelho[/b][/color], toda a companhia alegra-se pela sua chegada. Para facilitar seus primeiros passos, a seguinte carta dispõe de uma [color=#8b0000][b]orientações básicas[/b][/color] que irão facilitar o inicio de sua jornada na companhia. Leia-a com atenção, caso tenha dúvidas procure um membro do ministério.[/justify]
+
+[quote][center][b][size=15] ➥ PRIMEIROS PASSOS[/size][/b][/center]
+
+[justify][color=#8b0000][b]↯ -[/b][/color] Para começar a aplicar aulas, [color=#8b0000][b]você deverá realizar a sua graduação dentro de um prazo de 07 (sete) dias[/b][/color]. Caso não cumpra com o prazo, será expulso da companhia. Confira quem são os nosso graduadores na listagem de membros, [url=https://www.policiarcc.com/t39246-tre-listagem-de-membros][u][color=black]clicando aqui.[/color][/u][/url]
+
+[color=#8b0000][b]↯ -[/b][/color] Você [color=#8b0000][b]não poderá ausentar-se por 5 dias ou mais do Habbo[/b][/color], caso contrário será expulso. Portanto, caso necessite de tal ausência ou não obrigatoriedade em cumprir sua meta, solicite permissão de uma licença a qualquer um dos meus estagiários+!
+
+[color=#8b0000][b]↯ -[/b][/color] De forma a evitar essas e outras [color=#8b0000][b]punições[/b][/color], é de seu interesse que você leia, assim que possível, os dois principais documentos da companhia: [url=https://www.policiarcc.com/t39256-tre-regimento-interno][u][color=#8b0000][b][TRE] Regimento Interno[/b][/color][/u][/url] e [url=https://www.policiarcc.com/t39282-tre-codigo-penal-interno][u][color=#8b0000][b][TRE] Código Penal Interno[/b][/color][/u][/url].
+
+[color=#8b0000][b]↯ -[/b][/color] Na sua [color=#8b0000][b]primeira semana na companhia[/b][/color], você estará em casos especiais. Em outras palavras, não precisará cumprir com sua meta. Entretanto, é recomendável que busque se dedicar desde já, será de grande importância para futuras promoções.
+
+[color=#8b0000][b]↯ -[/b][/color] Além das documentações, a liderança te disponibiliza [color=#8b0000][b]vários tutoriais[/b][/color] para que tenha um ótimo rendimento aqui dentro, te auxiliando em envio de projetos e até a como se destacar na companhia! Poderá acessá-los [url=https://www.policiarcc.com/t33660-tre-tutoriais-gerais][u][color=black]clicando aqui.[/color][/u][/url]
+
+[color=#8b0000][b]↯ -[/b][/color] Caso deseje obter conhecimentos sobre Wireds, [color=#8b0000][b]realize a Capacitação de Wireds dos Treinadores![/b][/color] [url=https://www.policiarcc.com/t36045-rcc-capacitacao-de-wired-tre][color=black][b]Clique aqui e saiba mais.[/b][/color][/url][/justify][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]
+`;
+        } else if (formId === "form_expulsao") {
+            if(tipoExpulsao === "ausencia") {
+                mensagem = `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]COMITÊ DE INTENDÊNCIA[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20]NOTIFICAÇÃO DE EXPULSÃO[/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[quote]Treinador(a) {USERNAME}, em nome do [b]COMITÊ DE INTENDÊNCIA[/b] (CDI) venho por meio desta mensagem privada lhe informar que você foi [b]expulso[/b] da companhia dos treinadores, pelo fato de [b]ausentar-se de suas obrigações na companhia sem licença.[/b] De acordo com o regimento interno da companhia, o treinador que for encontrado em modo offline, com perfil invisível ou se ausentar de suas obrigações por cinco (5) dias ou mais sem tirar licença da companhia cometendo crime de abandono de dever, será expulso da companhia e receberá [b]-100[/b] medalhas.
+
+[center]Caso obtenha alguma prova para defender sua punição procure a liderança da companhia: [b]benjlfbaby e BeGomes94.[/b][/center][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]`;
+            } else if (tipoExpulsao === "graduacao") {
+                mensagem = `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]COMITÊ DE INTENDÊNCIA[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20]NOTIFICAÇÃO DE EXPULSÃO[/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[quote]Treinador(a) {USERNAME}, em nome do [b]COMITÊ DE INTENDÊNCIA[/b] (CDI) venho por meio desta mensagem privada lhe informar que você foi [b]expulso[/b] da companhia dos treinadores, pelo fato de [b]não realizar a graduação no período de 7 dias[/b]. De acordo com o regimento interno da companhia, o treinador que não cumprir sua graduação dentre 7 dias sofrerá punições severas, incluindo a expulsão da companhia.
+
+[center]Caso obtenha alguma prova para defender sua punição procure a liderança da companhia: [b]benjlfbaby e BeGomes94.[/b][/center][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]`;
+            } else if (tipoExpulsao === "sem_vinculo") {
+                mensagem = `[table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px" bgcolor="150102"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important"][img]https://i.imgur.com/r9C2AOs.png[/img][table style="width: auto; border: none!important; overflow: hidden; border-radius: 100px; position: relative; font-weight: 700; color: white; top: -5px; margin: 0 auto; box-shadow: 0px 2px 5px rgba(20, 0, 0, 0.14);  z-index: 2" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 15px 50px 15px 50px;"]COMITÊ DE INTENDÊNCIA[/td][/tr][/table][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px; position: relative; margin-top: -28px; z-index: 1" bgcolor="f0f0f0"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 3px"][table style="width: 100%; border: none!important; overflow: hidden; border-radius: 15px;" bgcolor="D9D9D9"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; text-align: justify"]
+
+[table  class="rank" style="width: 60%; border: none!important; margin: auto; line-height: 1.2em; border-radius: 10px;" bgcolor="#8b0000"][tr style="border: none;"][td style="border: none!important; padding: 1%;"][color="#FFFFFF"][b][size=20]NOTIFICAÇÃO DE EXPULSÃO[/size][/b][/color][/td][/tr][/table]
+
+[font=Poppins][b][scroll]Em casos de margens para dúvidas ou falta de orientações, procure algum estagiário+ para lhe auxiliar.[/scroll][/b][/font]
+
+[quote]Treinador(a) {USERNAME}, em nome do [b]COMITÊ DE INTENDÊNCIA[/b] (CDI) venho por meio desta mensagem privada lhe informar que você foi [b]expulso[/b] da companhia dos treinadores, pelo fato de [b]não possuir vínculos com a companhia dos treinadores.[/b] De acordo com o regimento interno da companhia, os treinadores com mais de uma semana na companhia que forem encontrados sem vínculos com a companhia (sem os grupos da companhia) serão imediatamente expulsos da companhia dos treinadores.
+
+[center]Caso obtenha alguma prova para defender sua punição procure a liderança da companhia: [b]benjlfbaby e BeGomes94.[/b][/center][/quote]
+
+[table style="width: auto; border: none!important; border-radius: 10px; overflow: visible; position: relative; left: -14px; border-collapse: collapse; margin: 0 auto;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px; vertical-align: middle; width: auto;"][table style="width: auto; border: none!important; margin: 0; position: relative; left: 20px; z-index: 1;"]
+[tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 0px"][img]https://2img.net/i.imgur.com/40XOFXK.png[/img][/td][/tr][/table][/td][td style="border: none!important; vertical-align: middle; padding: 0px"][table style="width: auto; border: none!important; border-radius: 10px; margin: 0; overflow: hidden;" bgcolor="721112"][tr style="border-width: medium !important; border-style: none !important; border-color: currentcolor !important; border-image: none !important;"][td style="border: none!important; padding: 10px 50px 10px 40px;"][left][color=#f0f0f0][b][size=14]COMITÊ DE INTENDÊNCIA[/size][/b][/color][/left]
+[/td][/tr][/table][/td][/tr][/table][/td][/tr][/table][/td][/tr][/table]
+[size=11][color=white]Design por [b].Brendon[/b] | Reformado por [b]wesleythadeu_[/b] - Todos os direitos reservados ao [b]Comitê de Intendência[/b] <i class="fas fa-bolt"></i>[/color][/size][/td][/tr][/table]`; 
+
+        }
+    }
+        const nicks = nick.split('/').map(nick => nick.trim());
+
+
+        // monta o FormData para envio da mensagem
+        let dadosFormulario = new FormData();
+        if (nicks.length > 0) {
+            nicks.forEach(nick => {
+                dadosFormulario.append('username[]', nick);
+            });
+        }
+
+        // titulo
+        dadosFormulario.append('subject',
+            formId === "form_boas_vindas" ? "[TRE] Carta de Boas-vindas" :
+                formId === "form_grad" ? "[CDI] GRADUAÇÃO PENDENTE [TRE]" :
+                    formId === "form_meta" ? "[CDI] META NÃO CUMPRIDA [TRE]" :
+                            formId === "form_expulsao" && tipoExpulsao === "ausencia" ? "[CDI] NOTIFICAÇÃO DE EXPULSÃO [TRE]" :
+                                formId === "form_expulsao" && tipoExpulsao === "graduacao" ? "[CDI] NOTIFICAÇÃO DE EXPULSÃO [TRE]" :
+                                    formId === "form_expulsao" && tipoExpulsao === "sem_vinculo" ? "[CDI] NOTIFICAÇÃO DE EXPULSÃO [TRE]" :
+                                            "[CDI] NOTIFICAÇÃO GERAL [TRE]"
+        );
+
+        // define a mensagem
+        dadosFormulario.append('message', mensagem);
+
+        try {
+            //https://www.policiarcc.com/privmsg
+            let respostaHtml = await fetch('https://hiagocarlos-testes.forumeiros.com/privmsg', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'folder': '',
+                    'mode': 'post',
+                    'new_pm_time': Math.floor(Date.now() / 1000).toString()
+                })
+            });
+
+            const html = await respostaHtml.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const authElements = doc.querySelectorAll('input[name="auth[]"]');
+            const auths = Array.from(authElements).map(el => el.value);
+
+            auths.forEach(auth => dadosFormulario.append('auth[]', auth));
+            dadosFormulario.append('folder', '');
+            dadosFormulario.append('mode', 'post');
+            dadosFormulario.append('new_pm_time', Math.floor(Date.now() / 1000).toString());
+            dadosFormulario.append('lt', '');
+            dadosFormulario.append('post', 'Enviar');
+            dadosFormulario.append('disable_html', 'on'); // Garante que o BBCode seja enviado
+
+            let respostaEnvio = await fetch('https://hiagocarlos-testes.forumeiros.com/privmsg', {
+                method: 'POST',
+                body: dadosFormulario,
+                credentials: 'include'
+            });
+
+            if (respostaEnvio.ok) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Mensagem enviada!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // Resetar formulário após 3 segundos
+                setTimeout(() => {
+                    document.getElementById(formId).reset();
+                }, 3000);
+            } else {
+                alert('Erro ao enviar mensagem. Tente novamente.');
+            }
+        } catch (erro) {
+            alert('Erro ao enviar mensagem. Tente novamente.');
+        }
+    }
+
+    async function enviarMensagemGrupo(formId, propostas) {
+        const form = document.getElementById(formId);
+        const formData = new FormData(form);
+
+        const nickGrupo = formData.get('nick_reuniao') || formData.get('data_reuniao')
+            || formData.get('hora_reuniao') || formData.get('titulo_proposta_${i}') || formData.get('autor_proposta_${i}') || formData.get('numero_proposta_${i}') || formData.get('nick_proposta')
+        let mensagem = '';
+
+        if (formId === "form_reuniao") {
+            const dataReuniao = formData.get('data_reuniao');
+            const horaReuniao = formData.get('hora_reuniao');
+            const horarios = horaReuniao.split('/');
+            const horaBR = horarios[0].trim();
+            const [horaBRPart, minutoBR] = horaBR.slice(0, 5).split(':').map(Number);
+            let horaPT = new Date();
+            horaPT.setHours(horaBRPart + 4, minutoBR);
+            horaPT = `${horaPT.getHours().toString().padStart(2, '0')}:${horaPT.getMinutes().toString().padStart(2, '0')}PT`;
+            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            const dataParts = dataReuniao.split('-');
+            const year = dataParts[0];
+            const month = meses[parseInt(dataParts[1]) - 1];
+            const day = dataParts[2];
+            const dataFormatada = `${day} ${month} ${year}`;
+            mensagem = `[table][tr][td][img]https://i.imgur.com/gJJ4Kae.png[/img]
+
+[font=Lexend Deca][size=28][blur][b][color=maroon]REUNIÃO GERAL[/color][/b][/blur][/size][/font]
+
+[font=Poppins][size=14]Saudações, tre inador [b]{USERNAME}[/b]!
+
+A próxima reunião geral da [blur][color=maroon][b]Companhia dos Treinadores[/b][/color][/blur] está marcada! A liderança te convida a participar desse momento, onde serão apresentadas as [b]últimas novidades, ideias e promoções[/b].
+Além disso, todos os membros estão convidados a participar do [b]evento realizado pelo Comitê de Marketing[/b], logo após o fim da reunião.[/size][/font]
+
+[table class="rank" style="transition: none 0ms ease 0s; color: rgb(255, 255, 255); font-weight: 400; height: 20px; width: -webkit-fill-available; max-width: 550px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.14) 0px 1px 2px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px inset; text-align: center; line-height: 0em; RCC - SÓ A VERDADEIRA!: rgba(0, 0, 0, 0.2) 0px 1px 1px; border-collapse: collapse; font-family: Roboto, sans-serif; border-width: initial !important; border-style: none !important; border-color: initial !important;" bgcolor="maroon"]
+[tr style="transition: none 0ms ease 0s; border: none; box-sizing: border-box; margin: 0px; padding: 0px;"][td style="transition: none 0ms ease 0s; box-sizing: border-box; margin: 0px; padding: 15px; border-width: initial !important; border-style: none !important; border-color: initial !important;"]
+[size=14][font=Poppins][color=white]A reunião acontecerá no dia [b]${dataFormatada}[/b] às [b]${horaBR}[/b] (BR) / [b]${horaPT}[/b] (PT).[/color][/font][/size][/td][/tr][/table][font=Poppins][size=14]A sua presença é muito importante nesse momento de convívio e transparência da companhia![/size][/font]
+
+[center][table style="transition: none 0ms ease 0s; width: -webkit-fill-available; color: rgb(0, 0, 0);" bgcolor="#f2f2f2" border="1"][tr][td][img(auto,40px)]https://static.vecteezy.com/system/resources/previews/022/101/124/original/whatsapp-logo-transparent-free-png.png[/img]
+[font=Poppins][size=14]Faça parte do nosso grupo do WhatsApp!
+[url=https://chat.whatsapp.com/DEzl7I33HeVCKNFptNZHa6][b][color=black]Clique aqui[/color][/b][/url] para entrar no grupo e interagir conosco.[/size][/font][/td][/tr][/table][/center][/td][/tr][/table]
+[center][img]https://i.imgur.com/CLtu2PT.png[/img]
+[b][font=Poppins][size=12]Atenciosamente, Comitê de Marketing
+Companhia dos Treinadores
+[color=maroon]#ImpérioVermelho[/color][/size][/font][/b][/center]`;
+        } else if (formId === "form_propostas") {
+            let propostasBBcode = "";
+            const quantidade = formData.get('quantidade_propostas');
+
+            for (let i = 1; i <= quantidade; i++) {
+                const tipo = formData.get(`tipo_proposta_${i}`) === 'sugestao' ? 'Sugestão' : 'Projeto';
+                const numero = formData.get(`numero_proposta_${i}`) || i;
+                const titulo = formData.get(`titulo_proposta_${i}`) || `Título Proposta ${i}`;
+                const autor = formData.get(`autor_proposta_${i}`) || 'Autor Desconhecido';
+                const corpo = formData.get(`corpo_proposta_${i}`) || 'Corpo não fornecido';
+
+                propostasBBcode += `[table class='rank' style='transition: none 0ms ease 0s; color: rgb(255, 255, 255); font-weight: 600; height: 20px; width: -webkit-fill-available; max-width: 300px; border-radius: 20px; box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.14) 0px 1px 2px, rgba(0, 0, 0, 0.1) 0px 0px 1px 1px inset; text-align: center; line-height: 0em; text-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px; border-collapse: collapse; font-family: Roboto, sans-serif; border-width: initial !important; border-style: none !important; border-color: initial !important;' bgcolor='maroon']
+[tr style='transition: none 0ms ease 0s; border: none; box-sizing: border-box; margin: 0px; padding: 0px;'][td style='transition: none 0ms ease 0s; box-sizing: border-box; margin: 0px; padding: 15px; border-width: initial !important; border-style: none !important; border-color: initial !important;'][size=12][font=Poppins][blur][color=white]PROPOSTA ${numero} - ${titulo}[/color][/blur][/font][/size][/td][/tr][/table]
+[spoiler=Ordem do Projeto][left][b]Desenvolvido por:[/b] ${autor}
+[b]N° do projeto/sugestão:[/b] ${numero}
+[b]Tipo de envio:[/b] ( ${tipo === 'Sugestão' ? '[b]x[/b]' : ' '} ) Sugestão ( ${tipo === 'Projeto' ? '[b]x[/b]' : ' '} ) Projeto
+
+[b]Corpo da proposta:[/b] ${corpo}[/left]
+[/spoiler]\n`;
+            }
+
+
+            mensagem = `[table][tr][td][center][img]https://i.imgur.com/gJJ4Kae.png[/img][/center]
+
+[font=Lexend Deca][size=28][blur][b][color=maroon]PROJETOS APROVADOS[/color][/b][/blur][/size][/font]
+
+[font=Poppins][size=14]Saudações, treinador [b]{USERNAME}[/b]!
+
+A liderança e o ministério da [blur][color=maroon][b]Companhia dos Treinadores[/b][/color][/blur], por meio do [b]Comitê de Marketing[/b], anuncia os projetos aprovados da semana![/size][/font]
+
+${propostasBBcode}
+
+[table style='transition: none 0ms ease 0s; border-collapse: collapse; width: -webkit-fill-available; color: rgb(0, 0, 0);' bgcolor='#f2f2f2' border='1']
+[tr style='transition: none 0ms ease 0s; border-top: none; border-right: none; border-bottom: 1px solid rgb(208, 208, 208); border-left: none; border-image: initial; box-sizing: border-box; margin: 0px; padding: 0px;'][td style='transition: none 0ms ease 0s; border-width: initial; border-style: none; border-color: initial; box-sizing: border-box; margin: 0px; padding: 15px;'][font=Lexend Deca][size=18][blur][color=maroon][b]CONSIDERAÇÕES[/b][/color][/blur][/size][/font]
+
+[font=Poppins][size=13]Sua participação no desenvolvimento da companhia é [b]essencial[/b]. Ao encontrar algum aspecto que[b] pode ou precisa ser melhorado[/b], envie a sua sugestão no [b]tópico da ouvidoria[/b]. Caso tenha dúvidas sobre a elaboração de um projeto, entre em contato com algum membro mais [b]experiente [/b]na companhia.
+Para acessar o tópico, [b][url=https://www.policiarcc.com/t35525-tre-ouvidoria]clique aqui.[/url][/b][/size][/font]
+
+[center][table style='transition: none 0ms ease 0s; width: -webkit-fill-available; color: rgb(0, 0, 0);' bgcolor='#ffffff' border='1']
+[tr][td][img]https://i.imgur.com/JuvGiy4.png[/img]
+
+[font=Poppins][size=14]Faça parte do nosso grupo do WhatsApp!
+[url=https://chat.whatsapp.com/DEzl7I33HeVCKNFptNZHa6][b][color=black]Clique aqui[/color][/b][/url] para entrar no grupo e interagir conosco.[/size][/font][/td][/tr][/table][/center][/td][/tr][/table]
+[center][img]https://i.imgur.com/CLtu2PT.png[/img]
+[b][font=Poppins][size=12]Atenciosamente, Comitê de Marketing
+Companhia dos Treinadores
+[color=maroon]#ImpérioVermelho[/color][/size][/font][/b][/center][/td][/tr][/table]`;
+        }
+        
+
+        try {
+            let respostaHtml = await fetch('https://hiagocarlos-testes.forumeiros.com/privmsg', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'folder': '',
+                    'mode': 'post',
+                    'new_pm_time': Math.floor(Date.now() / 1000).toString()
+                })
+            });
+
+            const html = await respostaHtml.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const authElements = doc.querySelectorAll('input[name="auth[]"]');
+            const auths = Array.from(authElements).map(el => el.value);
+
+            let dadosFormulario = new FormData();
+            const grupoPropostas = document.getElementById('grupo_propostas').value;
+
+            if(grupoPropostas) {
+                dadosFormulario.append('usergroup', grupoPropostas);
+            } else {
+                alert('error')
+            }
+
+            dadosFormulario.append('subject',
+                    formId === "form_propostas" ? "[CDI] PROJETOS APROVADOS [TRE]" :
+                            "[CDI] NOTIFICAÇÃO GERAL [TRE]"
+            );
+
+            dadosFormulario.append('message', mensagem);
+            auths.forEach(auth => dadosFormulario.append('auth[]', auth));
+            dadosFormulario.append('folder', '');
+            dadosFormulario.append('mode', 'post');
+            dadosFormulario.append('new_pm_time', Math.floor(Date.now() / 1000).toString());
+            dadosFormulario.append('lt', '');
+            dadosFormulario.append('post', 'Enviar');
+            dadosFormulario.append('disable_html', 'on'); // Garante que o BBCode seja enviado
+
+            let respostaEnvio = await fetch('https://hiagocarlos-testes.forumeiros.com/privmsg', {
+                method: 'POST',
+                body: dadosFormulario,
+                credentials: 'include'
+            });
+
+            if (respostaEnvio.ok) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Mensagem enviada!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // Resetar formulário após 3 segundos
+                setTimeout(() => {
+                    document.getElementById(formId).reset();
+                }, 3000);
+            } else {
+                alert('Erro ao enviar mensagem. Tente novamente.');
+            }
+        } catch (erro) {
+            alert('Erro ao enviar mensagem. Tente novamente.');
+        }
+    }
+
+    function fill_boas_vindas(e) {
+        e.preventDefault();
+        const isValid = $("#form_boas_vindas").find("input").filter(function () { return this.value === ""; }).length === 0;
+        if (isValid) {
+            enviarMensagem('form_boas_vindas');
+        } else {
+            alert('Preencha todos os campos!');
+        }
+    }
+
+    function fill_graduation(e) {
+        e.preventDefault();
+        const isValid = $("#form_grad").find("input").filter(function () { return this.value === ""; }).length === 0;
+        if (isValid) {
+            enviarMensagem('form_grad');
+        } else {
+            alert('Preencha todos os campos!');
+        }
+    }
+
+
+    function fill_meta(e) {
+        e.preventDefault();
+        const isValid = $("#form_meta").find("input").filter(function () { return this.value === ""; }).length === 0;
+        if (isValid) {
+            enviarMensagem('form_meta');
+        } else {
+            alert('Preencha todos os campos!');
+        }
+    }
+
+    function fill_expulsao(event) {
+        event.preventDefault();
+
+        const form = document.getElementById('form_expulsao');
+        const tipoExpulsao = form.querySelector('#tipo_expulsao').value.trim();
+
+
+        function isFieldFilled(selector) {
+            const field = form.querySelector(selector);
+            return field && field.value.trim().length > 0;
+        }
+
+        let isValid = false;
+
+        switch (tipoExpulsao) {
+            case 'ausencia':
+                isValid = isFieldFilled('#nick_ausencia');
+                break;
+            case 'graduacao':
+                isValid = isFieldFilled('#nick_graduacao');
+                break;
+            case 'sem_vinculo':
+                isValid = isFieldFilled('#nick_sem_vinculo');
+                break;
+            default:
+                alert('Selecione um tipo de expulsão válido!');
+                return;
+        }
+
+        if (isValid) {
+            enviarMensagem('form_expulsao');
+        } else {
+            alert('Preencha todos os campos!');
+        }
+    }
+
+    $("#form_boas_vindas").on('submit', fill_boas_vindas);
+    $("#form_grad").on('submit', fill_graduation);
+    $("#form_meta").on('submit', fill_meta);
+    $("#form_expulsao").on('submit', fill_expulsao);
+
+
+
+    $(document).ready(function () {
+        $("#select_options").on('change', function () {
+            $(".card").hide();
+            let selected = $(this).val();
+            if (selected) {
+                $(`#${selected} `).show();
+            }
+        });
+
+
+
+
+        // expulsao
+
+        $("#tipo_expulsao").on('change', function () {
+            let selected = $(this).val();
+            $(".extra-form").hide();
+            switch (selected) {
+                case "ausencia":
+                    $("#form_ausencia").show();
+                    break;
+                case "graduacao":
+                    $("#form_graduacao").show();
+                    break;
+                case "sem_vinculo":
+                    $("#form_sem_vinculo").show();
+                    break;
+                default:
+
+                    break;
+            }
+        });
+
+        // propostas
+        let propostas = [];
+
+        function criarProposta(indice, quantidade) {
+            const propostaDiv = document.createElement('div');
+            propostaDiv.id = `proposta_${indice} `;
+            propostaDiv.style.display = indice === 1 ? 'block' : 'none';
+
+            propostaDiv.innerHTML = `
+                <div class="proposta-container" >
+                    <h3>Proposta ${indice}</h3>
+                    <label for="titulo_proposta_${indice}">Título:</label>
+                    <input type="text" id="titulo_proposta_${indice}" class="input_form" name="titulo_proposta_${indice}"/>
+                    
+                    <label for="numero_proposta_${indice}">Número:</label>
+                    <input type="number" id="numero_proposta_${indice}" class="input_form" name="numero_proposta_${indice}" min="1"/>
+                    
+                    <label for="tipo_proposta_${indice}">Tipo:</label>
+                    <select id="tipo_proposta_${indice}" name="tipo_proposta_${indice}" class="input_form" style="text-align: left">
+                        <option value="sugestao">Sugestão</option>
+                        <option value="projeto">Projeto</option>
+                    </select>
+                    
+                    <label for="autor_proposta_${indice}">Autor:</label>
+                    <input type="text" id="autor_proposta_${indice}" class="input_form" name="autor_proposta_${indice}" />
+                        
+                    <label for="corpo_proposta_${indice}">Corpo do Projeto:</label>
+                    <textarea id="corpo_proposta_${indice}" name="corpo_proposta_${indice}" class="input_form" style="resize: vertical"></textarea>
+                </div >
+                    `;
+
+            if (indice < quantidade) {
+                const btnProxima = document.createElement('button');
+                btnProxima.type = 'button';
+                btnProxima.classList.add('button_submit');
+                btnProxima.textContent = `Próxima(${indice + 1})`;
+                btnProxima.addEventListener('click', function () {
+                    if (validarProposta(indice)) {
+                        trocarProposta(indice, quantidade);
+                    }
+                });
+                propostaDiv.appendChild(btnProxima);
+            } else {
+                const btnFinalizar = document.createElement('button');
+                btnFinalizar.type = 'button';
+                btnFinalizar.textContent = 'Enviar';
+                btnFinalizar.classList.add('button_submit');
+                btnFinalizar.addEventListener('click', async function () {
+                    if (validarProposta(indice)) {
+                        const propostas = coletarTodasPropostas(quantidade);
+                        try {
+                            await enviarMensagemGrupo('form_propostas', propostas);
+                        } catch (erro) {
+                            alert('Erro ao enviar propostas!');
+                        }
+                    }
+                });
+                propostaDiv.appendChild(btnFinalizar);
+            }
+
+            return propostaDiv;
+        }
+
+
+        function validarProposta(indice) {
+            const propostaDiv = document.getElementById(`proposta_${indice} `);
+            const isValid = Array.from(propostaDiv.querySelectorAll('input, select, textarea')).every(input => input.value.trim() !== '');
+
+            if (!isValid) {
+                alert('Preencha todos os campos!');
+            }
+
+            return isValid;
+        }
+
+        function trocarProposta(indiceAtual, quantidade) {
+            document.getElementById(`proposta_${indiceAtual} `).style.display = 'none';
+            document.getElementById(`proposta_${indiceAtual + 1} `).style.display = 'block';
+        }
+
+        function coletarTodasPropostas(quantidade) {
+            let todasPropostas = '';
+
+            for (let i = 1; i <= quantidade; i++) {
+                const tituloInput = document.getElementById(`titulo_proposta_${i} `);
+                const numeroInput = document.getElementById(`numero_proposta_${i} `);
+                const tipoSelect = document.getElementById(`tipo_proposta_${i} `);
+                const autorInput = document.getElementById(`autor_proposta_${i} `);
+                const corpoTextarea = document.getElementById(`corpo_proposta_${i} `);
+
+                if (tituloInput && numeroInput && tipoSelect && autorInput && corpoTextarea) {
+                    const titulo = tituloInput.value;
+                    const numero = numeroInput.value;
+                    const tipo = tipoSelect.value;
+                    const autor = autorInput.value;
+                    const corpo = corpoTextarea.value;
+
+                    todasPropostas += `
+                Proposta ${i}:
+                Título: ${titulo}
+                Número: ${numero}
+                Tipo: ${tipo}
+                Autor: ${autor}
+                Corpo: ${corpo}
+
+            `;
+                }
+            }
+
+            return todasPropostas;
+        }
+        document.getElementById('btn_confirmar_quantidade').addEventListener('click', function () {
+            const quantidade = parseInt(document.getElementById('quantidade_propostas').value);
+            const propostasDinamicas = document.getElementById('propostas_dinamicas');
+            propostasDinamicas.innerHTML = '';
+            document.getElementById('btn_enviar').style.display = 'none';
+
+            for (let i = 1; i <= quantidade; i++) {
+                propostasDinamicas.appendChild(criarProposta(i, quantidade));
+            }
+        });
+
+    });
+</script>
+</body>
+</html>
