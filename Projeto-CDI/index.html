@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CDI. Gerador de Mensagem Privada</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -23,11 +24,9 @@
     --link: #6ea8fe;
   }
 
-  * { box-sizing: border-box; }
+  #cdi-gerador-mp * { box-sizing: border-box; }
 
-  body {
-    margin: 0;
-    min-height: 100vh;
+  #cdi-gerador-mp {
     background: var(--bg);
     font-family: 'Inter', sans-serif;
     color: var(--text-main);
@@ -37,7 +36,7 @@
     padding: 48px 20px 24px;
   }
 
-  .container {
+  #cdi-gerador-mp .cdi-container {
     width: 100%;
     max-width: 560px;
     display: flex;
@@ -54,13 +53,12 @@
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
   }
 
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-bottom: 18px;
-}
+  #cdi-gerador-mp .cdi-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
 
   .img-background {
     width: 50px;
@@ -79,7 +77,6 @@
 
   .title-cdi {
     font-family: 'Poppins', sans-serif;
-    text-align: center;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.03em;
@@ -87,12 +84,11 @@
     text-transform: uppercase;
   }
 
-  .title {
-    text-align: center;
+  #cdi-gerador-mp .cdi-title {
     margin-bottom: 20px;
   }
 
-  .title span {
+  #cdi-gerador-mp .cdi-title span {
     font-family: 'Poppins', sans-serif;
     font-size: 28px;
     font-weight: 800;
@@ -123,17 +119,17 @@
     box-shadow: 0 0 0 3px var(--accent-glow);
   }
 
-  .card {
+  #cdi-gerador-mp .cdi-card {
     display: none;
     border-top: 1px solid var(--divider);
     padding-top: 24px;
   }
 
-  .card.card-active {
+  #cdi-gerador-mp .cdi-card.card-active {
     display: block;
   }
 
-  .card h2 {
+  #cdi-gerador-mp .cdi-card h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 17px;
     font-weight: 700;
@@ -149,7 +145,7 @@
     margin: 4px 0 16px;
   }
 
-  form {
+  #cdi-gerador-mp form {
     display: flex;
     flex-direction: column;
   }
@@ -163,10 +159,10 @@
     margin-bottom: 8px;
   }
 
-  input[type="text"],
-  input[type="number"],
-  select#grupo_propostas,
-  select#tipo_expulsao {
+  #cdi-gerador-mp input[type="text"],
+  #cdi-gerador-mp input[type="number"],
+  #cdi-gerador-mp select#grupo_propostas,
+  #cdi-gerador-mp select#tipo_expulsao {
     width: 100%;
     background: var(--input-bg);
     border: 1px solid var(--card-border);
@@ -180,20 +176,20 @@
     transition: border-color .15s ease, box-shadow .15s ease;
   }
 
-  select#grupo_propostas,
-  select#tipo_expulsao {
+  #cdi-gerador-mp select#grupo_propostas,
+  #cdi-gerador-mp select#tipo_expulsao {
     appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23a08b8d' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
     background-repeat: no-repeat;
     background-position: right 16px center;
   }
 
-  input::placeholder {
+  #cdi-gerador-mp input::placeholder {
     color: #6f5c5e;
   }
 
-  input:focus,
-  select:focus {
+  #cdi-gerador-mp input:focus,
+  #cdi-gerador-mp select:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-glow);
   }
@@ -241,20 +237,76 @@
     margin-bottom: 20px;
   }
 
+  .proposta-container {
+    border-top: 1px solid var(--divider);
+    padding-top: 18px;
+    margin-top: 4px;
+  }
+
+  .proposta-container h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+  }
+
+  .proposta-container label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .input_form {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    padding: 13px 16px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  select.input_form {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%23a08b8d' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  textarea.input_form {
+    min-height: 110px;
+    resize: vertical;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .input_form:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
   .extra-form {
     border-top: 1px solid var(--divider);
     padding-top: 18px;
     margin-top: 4px;
   }
 
-  .message {
+  #cdi-gerador-mp .cdi-message {
     margin-top: 24px;
     color: var(--text-main);
     font-size: 14px;
     line-height: 1.6;
   }
 
-  .message:empty {
+  #cdi-gerador-mp .cdi-message:empty {
     display: none;
   }
 
@@ -278,23 +330,32 @@
     margin-right: 6px;
   }
 </style>
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+  }
+</style>
 </head>
 <body>
 
-<div class="container">
+
+<div id="cdi-gerador-mp"><div class="cdi-container">
     <div class="card-info">
-        <div class="top">
+        <div class="cdi-top">
 
             <div class="img-background">
                 <img src="https://www.habbo.com.br/habbo-imaging/badge/b22134s36104t27114s3901101792806cfdd525f8491204d658a9e53.gif"
-                    style="width: 60px; height: 60px;" />
+                    style="width: 50px; height: 50px;" />
             </div>
             <span class="title-cdi">Comitê de Intendência</span><br />
         </div>
 
-        <div class="title">
+        <div class="cdi-title">
             <span>Gerador de Mensagem Privada</span>
         </div>
+
         <select id="select_options">
             <option value="" selected="">Selecione o requerimento desejado</option>
             <option value="carta_boas_vindas">Envio de Carta de Boas-vindas</option>
@@ -305,7 +366,7 @@
         </select>
 
         <!--  cards e formulários  -->
-        <div class="card" id="carta_boas_vindas">
+        <div class="cdi-card" id="carta_boas_vindas">
             <div class="container_carta">
                 <h2>Envio de Carta de Boas-vindas</h2>
 
@@ -323,7 +384,7 @@
         
 
         <!--        card envio de grad         -->
-        <div class="card" id="grad_pendente">
+        <div class="cdi-card" id="grad_pendente">
             <div class="container_grad">
                 <h2>Envio de Graduação Pendente</h2>
 
@@ -338,7 +399,7 @@
         </div>
 
         <!--         card meta não cumprida         -->
-        <div class="card" id="meta_nao_cumprida">
+        <div class="cdi-card" id="meta_nao_cumprida">
             <div class="container_meta">
                 <h2>Envio de Meta Não Cumprida</h2>
 
@@ -353,7 +414,7 @@
         </div>
 
         <!--        card de propostas        -->
-        <div class="card" id="propostas">
+        <div class="cdi-card" id="propostas">
             <div class="container_propostas">
                 <h2>Envio de Propostas</h2>
 
@@ -362,6 +423,7 @@
                     <!--        grupo        -->
                     <label style="font-weight: 600;" for="grupo_propostas" class="label_input">Escolha o grupo:</label>
                     <select id="grupo_propostas" name="grupo_propostas">
+                        <!--Value = 33 - Treinadores/ policiarcc-->
                         <option value="33">Treinadores</option>
                     </select>
 
@@ -384,7 +446,7 @@
         </div>
 
         <!--        card expulsão        -->
-        <div class="card" id="noti_expulsao">
+        <div class="cdi-card" id="noti_expulsao">
             <div class="container_expulsao">
                 <h2>Notificação de Expulsão</h2>
 
@@ -441,7 +503,7 @@
         </div>
 
         <!--         área para exibir a mensagem gerada         -->
-        <div class="message" id="fa-generated-message">
+        <div class="cdi-message" id="fa-generated-message">
 
         </div>
 
@@ -451,8 +513,69 @@
 <br>
 <p class="dev">© 2026 Gabinete de Tecnologia e Informação. Todos os direitos reservados.</p>
 </div>
+</div>
 
 <script>
+    const PLANILHA_SCRIPT_URL = "COLOQUE_AQUI_A_URL_DO_SEU_GOOGLE_APPS_SCRIPT";
+    let nickRemetenteAtual = '';
+
+    function obterNickRemetente() {
+        return nickRemetenteAtual;
+    }
+
+    async function detectarNickViaFetch() {
+        try {
+            const resposta = await fetch(window.location.origin + '/', { credentials: 'include' });
+            const html = await resposta.text();
+            const indice = html.indexOf('_userdata');
+            if (indice === -1) return '';
+
+            const trecho = html.substring(indice, indice + 800);
+            const logado = trecho.match(/_userdata\["session_logged_in"\]\s*=\s*(\d)/);
+            const nome = trecho.match(/_userdata\["username"\]\s*=\s*"([^"]+)"/);
+
+            if (logado && logado[1] === '1' && nome) {
+                return nome[1];
+            }
+        } catch (erro) {
+            console.error('Falha ao detectar sessão do fórum via fetch:', erro);
+        }
+        return '';
+    }
+
+    async function carregarNickRemetente() {
+        if (typeof _userdata !== 'undefined' && _userdata.session_logged_in && _userdata.username) {
+            nickRemetenteAtual = _userdata.username;
+            return;
+        }
+        nickRemetenteAtual = await detectarNickViaFetch();
+    }
+    carregarNickRemetente();
+
+    function logarEnvio(tipoMensagem, destinatarios) {
+        if (!PLANILHA_SCRIPT_URL || PLANILHA_SCRIPT_URL.includes('COLOQUE_AQUI')) {
+            console.warn('PLANILHA_SCRIPT_URL não configurada — envio não foi registrado na planilha.');
+            return;
+        }
+
+        const remetente = obterNickRemetente();
+        const destino = Array.isArray(destinatarios) ? destinatarios.join(', ') : destinatarios;
+
+        fetch(PLANILHA_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+                remetente: remetente,
+                destinatarios: destino,
+                tipoMensagem: tipoMensagem,
+                dataHora: new Date().toISOString()
+            })
+        }).catch(function (erro) {
+            console.error('Falha ao registrar envio na planilha:', erro);
+        });
+    }
+
     async function enviarMensagem(formId) {
         const form = document.getElementById(formId);
         const formData = new FormData(form);
@@ -623,7 +746,6 @@ Em caso de reincidência de não cumprimento de meta nos cargos de Treinador de 
         dadosFormulario.append('message', mensagem);
 
         try {
-            //https://www.policiarcc.com/privmsg
             let respostaHtml = await fetch('https://hiagocarlos-testes.forumeiros.com/privmsg', {
                 method: 'POST',
                 credentials: 'include',
@@ -665,6 +787,7 @@ Em caso de reincidência de não cumprimento de meta nos cargos de Treinador de 
                     showConfirmButton: false,
                     timer: 1500
                 });
+                logarEnvio(formId, nicks);
                 // Resetar formulário após 3 segundos
                 setTimeout(() => {
                     document.getElementById(formId).reset();
@@ -827,6 +950,7 @@ Companhia dos Treinadores
                     showConfirmButton: false,
                     timer: 1500
                 });
+                logarEnvio(formId, 'Grupo (id ' + grupoPropostas + ')');
                 // Resetar formulário após 3 segundos
                 setTimeout(() => {
                     document.getElementById(formId).reset();
@@ -841,6 +965,7 @@ Companhia dos Treinadores
 
     function fill_boas_vindas(e) {
         e.preventDefault();
+        if (!obterNickRemetente()) { alert('Não foi possível identificar sua sessão do fórum. Recarregue a página estando logado.'); return; }
         const isValid = $("#form_boas_vindas").find("input").filter(function () { return this.value === ""; }).length === 0;
         if (isValid) {
             enviarMensagem('form_boas_vindas');
@@ -851,6 +976,7 @@ Companhia dos Treinadores
 
     function fill_graduation(e) {
         e.preventDefault();
+        if (!obterNickRemetente()) { alert('Não foi possível identificar sua sessão do fórum. Recarregue a página estando logado.'); return; }
         const isValid = $("#form_grad").find("input").filter(function () { return this.value === ""; }).length === 0;
         if (isValid) {
             enviarMensagem('form_grad');
@@ -862,6 +988,7 @@ Companhia dos Treinadores
 
     function fill_meta(e) {
         e.preventDefault();
+        if (!obterNickRemetente()) { alert('Não foi possível identificar sua sessão do fórum. Recarregue a página estando logado.'); return; }
         const isValid = $("#form_meta").find("input").filter(function () { return this.value === ""; }).length === 0;
         if (isValid) {
             enviarMensagem('form_meta');
@@ -870,8 +997,20 @@ Companhia dos Treinadores
         }
     }
 
+    function fill_rebaixamento(e) {
+        e.preventDefault();
+        const isValid = $("#form_rebaixamento").find("input, select").filter(function () { return this.value === ""; }).length === 0;
+        if (isValid) {
+            enviarMensagem('form_rebaixamento');
+        } else {
+            alert('Preencha todos os campos!');
+        }
+    }
+
+
     function fill_expulsao(event) {
         event.preventDefault();
+        if (!obterNickRemetente()) { alert('Não foi possível identificar sua sessão do fórum. Recarregue a página estando logado.'); return; }
 
         const form = document.getElementById('form_expulsao');
         const tipoExpulsao = form.querySelector('#tipo_expulsao').value.trim();
@@ -915,7 +1054,7 @@ Companhia dos Treinadores
 
     $(document).ready(function () {
         $("#select_options").on('change', function () {
-            $(".card").hide();
+            $(".cdi-card").hide();
             let selected = $(this).val();
             if (selected) {
                 $(`#${selected} `).show();
@@ -994,6 +1133,7 @@ Companhia dos Treinadores
                 btnFinalizar.textContent = 'Enviar';
                 btnFinalizar.classList.add('button_submit');
                 btnFinalizar.addEventListener('click', async function () {
+                    if (!obterNickRemetente()) { alert('Não foi possível identificar sua sessão do fórum. Recarregue a página estando logado.'); return; }
                     if (validarProposta(indice)) {
                         const propostas = coletarTodasPropostas(quantidade);
                         try {
@@ -1070,5 +1210,6 @@ Companhia dos Treinadores
 
     });
 </script>
+
 </body>
 </html>
