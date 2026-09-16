@@ -520,7 +520,7 @@
 </div>
 
 <script>
-    const PLANILHA_SCRIPT_URL = "COLOQUE_AQUI_A_URL_DO_SEU_GOOGLE_APPS_SCRIPT";
+    const PLANILHA_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzVXN7uHXy1UG39q0r-N4B3r5KwQXFdcvyxqQU2dzZjms7u34-QS4zgF6PpAoRHARI5PA/exec";
     let nickRemetenteAtual = '';
 
     function obterNickRemetente() {
@@ -557,7 +557,7 @@
     carregarNickRemetente();
 
     function logarEnvio(tipoMensagem, destinatarios) {
-        if (!PLANILHA_SCRIPT_URL || PLANILHA_SCRIPT_URL.includes('COLOQUE_AQUI')) {
+        if (!PLANILHA_SCRIPT_URL || PLANILHA_SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbzVXN7uHXy1UG39q0r-N4B3r5KwQXFdcvyxqQU2dzZjms7u34-QS4zgF6PpAoRHARI5PA/exec')) {
             console.warn('PLANILHA_SCRIPT_URL não configurada — envio não foi registrado na planilha.');
             return;
         }
